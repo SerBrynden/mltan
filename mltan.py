@@ -701,80 +701,81 @@ def sun2(jdate):
 
 ###############################
 
-# conversion constants
-pi2 = 2.0 * np.pi
-dtr = np.pi / 180.0
-rtd = 180.0 / np.pi
-print('\n\nMLTAN/RAAN relationship')
-print('\n-----------------------')
+if __name__ == '__main__':
+    # conversion constants
+    pi2 = 2.0 * np.pi
+    dtr = np.pi / 180.0
+    rtd = 180.0 / np.pi
+    print('\n\nMLTAN/RAAN relationship')
+    print('\n-----------------------')
 
-# request type of conversion
-while 1:
-    print('\nplease select the type of conversion')
-    print('\n <1> MLTAN to RAAN')
-    print('\n <2> RAAN to MLTAN')
-    print('\nselection (1 or 2)')
-    choice = int(input('? '))
-    if choice >= 1 and choice <= 2:
-        break
-
-##################################
-# request ascending node UTC epoch
-##################################
-
-print('\n\nascending node UTC epoch')
-month, day, year = getdate()
-utc_an_hr, utc_an_min, utc_an_sec = gettime()
-dday = utc_an_hr / 24 + utc_an_min / 1440 + utc_an_sec / 86400.0
-
-# julian date of ascending node crossing
-jdate_an = julian(month, day + dday, year)
-cdstr_an, utstr_an = jd2str(jdate_an)
-
-# greenwich apparent sidereal time at ascending node
-gast_an = gast2(jdate_an, 0.0, 1)
-
-if choice == 1:
-    ###############
-    # mltan to raan
-    ###############
-    mltan_hr, mltan_min, mltan_sec = getmltan()
-    mltan_an = mltan_hr + mltan_min / 60.0 + mltan_sec / 3600.0
-    # compute raan from mltan
-    raan, rasc_ms, eot = mltan2raan(jdate_an, mltan_an)
-    dday = mltan_an / 24.0
-    # working julian date
-    jdate_wrk = julian(month, day + dday, year)
-    cdstr_wrk, utstr_wrk = jd2str(jdate_wrk)
-else:
-    # raan to mltan
+    # request type of conversion
     while 1:
-        print('\nplease input the RAAN (degrees)')
-        raan = float(input('? '))
-        if raan >= 0 and raan <= 360:
+        print('\nplease select the type of conversion')
+        print('\n <1> MLTAN to RAAN')
+        print('\n <2> RAAN to MLTAN')
+        print('\nselection (1 or 2)')
+        choice = int(input('? '))
+        if choice >= 1 and choice <= 2:
             break
 
-    raan = dtr * raan
-    mltan_an, rasc_ms, eot = raan2mltan(jdate_an, raan)
-    dday = mltan_an / 24.0
-    # working julian date
-    jdate_wrk = julian(month, day + dday, year)
-    cdstr_wrk, utstr_wrk = jd2str(jdate_wrk)
+    ##################################
+    # request ascending node UTC epoch
+    ##################################
 
-# east longitude of the ascending node
-elan = np.mod(raan - 2.0 * np.pi * gast_an / 24.0, 2 * np.pi)
+    print('\n\nascending node UTC epoch')
+    month, day, year = getdate()
+    utc_an_hr, utc_an_min, utc_an_sec = gettime()
+    dday = utc_an_hr / 24 + utc_an_min / 1440 + utc_an_sec / 86400.0
 
-# print results
-if choice == 1:
-    print('\n\nMLTAN to RAAN conversion')
-else:
-    print('\n\nRAAN to MLTAN conversion')
+    # julian date of ascending node crossing
+    jdate_an = julian(month, day + dday, year)
+    cdstr_an, utstr_an = jd2str(jdate_an)
 
-print('\nascending node calendar date             ' + cdstr_an)
-print('\nascending node universal time            ' + utstr_an)
-print('\nmean local time of the ascending node    ' + utstr_wrk)
-print('\nright ascension of the ascending node  %12.6f degrees' % (rtd * raan))
-print('\neast longitude of the ascending node   %12.6f degrees' % (rtd * elan))
-print('\nright ascension of the mean sun        %12.6f degrees' % (rtd * rasc_ms))
-print('\nGreenwich apparent sidereal time       %12.6f degrees' % (360.0 * gast_an / 24.0))
-print('\nequation of time                       %12.6f minutes\n' % (4.0 * rtd * eot))
+    # greenwich apparent sidereal time at ascending node
+    gast_an = gast2(jdate_an, 0.0, 1)
+
+    if choice == 1:
+        ###############
+        # mltan to raan
+        ###############
+        mltan_hr, mltan_min, mltan_sec = getmltan()
+        mltan_an = mltan_hr + mltan_min / 60.0 + mltan_sec / 3600.0
+        # compute raan from mltan
+        raan, rasc_ms, eot = mltan2raan(jdate_an, mltan_an)
+        dday = mltan_an / 24.0
+        # working julian date
+        jdate_wrk = julian(month, day + dday, year)
+        cdstr_wrk, utstr_wrk = jd2str(jdate_wrk)
+    else:
+        # raan to mltan
+        while 1:
+            print('\nplease input the RAAN (degrees)')
+            raan = float(input('? '))
+            if raan >= 0 and raan <= 360:
+                break
+
+        raan = dtr * raan
+        mltan_an, rasc_ms, eot = raan2mltan(jdate_an, raan)
+        dday = mltan_an / 24.0
+        # working julian date
+        jdate_wrk = julian(month, day + dday, year)
+        cdstr_wrk, utstr_wrk = jd2str(jdate_wrk)
+
+    # east longitude of the ascending node
+    elan = np.mod(raan - 2.0 * np.pi * gast_an / 24.0, 2 * np.pi)
+
+    # print results
+    if choice == 1:
+        print('\n\nMLTAN to RAAN conversion')
+    else:
+        print('\n\nRAAN to MLTAN conversion')
+
+    print('\nascending node calendar date             ' + cdstr_an)
+    print('\nascending node universal time            ' + utstr_an)
+    print('\nmean local time of the ascending node    ' + utstr_wrk)
+    print('\nright ascension of the ascending node  %12.6f degrees' % (rtd * raan))
+    print('\neast longitude of the ascending node   %12.6f degrees' % (rtd * elan))
+    print('\nright ascension of the mean sun        %12.6f degrees' % (rtd * rasc_ms))
+    print('\nGreenwich apparent sidereal time       %12.6f degrees' % (360.0 * gast_an / 24.0))
+    print('\nequation of time                       %12.6f minutes\n' % (4.0 * rtd * eot))
