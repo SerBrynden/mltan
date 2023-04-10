@@ -259,7 +259,7 @@ def getdate():
         m = float(mdy[0])
         d = float(mdy[1])
         y = float(mdy[2])
-        if m >= 1 and m <= 12 and d >= 1 and d <= 31:
+        if 1 <= m <= 12 and 1 <= d <= 31:
             break
 
     return m, d, y
@@ -285,7 +285,7 @@ def getmltan():
         utmin = float(hms[1])
         utsec = float(hms[2])
         # check for valid inputs
-        if uthr >= 0 and uthr <= 24 and utmin >= 0 and utmin <= 60 and utsec >= 0 and utsec <= 60:
+        if 0 <= uthr <= 24 and 0 <= utmin <= 60 and 0 <= utsec <= 60:
             break
 
     return uthr, utmin, utsec
@@ -311,7 +311,7 @@ def gettime():
         utmin = float(hms[1])
         utsec = float(hms[2])
         # check for valid inputs
-        if uthr >= 0 and uthr <= 24 and utmin >= 0 and utmin <= 60 and utsec >= 0 and utsec <= 60:
+        if 0 <= uthr <= 24 and 0 <= utmin <= 60 and 0 <= utsec <= 60:
             break
 
     return uthr, utmin, utsec
@@ -716,7 +716,7 @@ if __name__ == '__main__':
         print('\n <2> RAAN to MLTAN')
         print('\nselection (1 or 2)')
         choice = int(input('? '))
-        if choice >= 1 and choice <= 2:
+        if 1 <= choice <= 2:
             break
 
     ##################################
@@ -748,11 +748,13 @@ if __name__ == '__main__':
         jdate_wrk = julian(month, day + dday, year)
         cdstr_wrk, utstr_wrk = jd2str(jdate_wrk)
     else:
+        ###############
         # raan to mltan
+        ###############
         while 1:
             print('\nplease input the RAAN (degrees)')
             raan = float(input('? '))
-            if raan >= 0 and raan <= 360:
+            if 0 <= raan <= 360:
                 break
 
         raan = dtr * raan
